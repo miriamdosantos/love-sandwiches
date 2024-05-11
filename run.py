@@ -11,7 +11,7 @@ SCOPE = [
 CREDS = Credentials.from_service_account_file('creds.json')
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
-SHEET = GSPREAD_CLIENT.open('love_sandwiches')
+SHEET = GSPREAD_CLIENT.open(' love')
 
 
 def get_sales_data():
@@ -65,6 +65,13 @@ def update_sales_worksheet(data):
     sales_worksheet.append_row(data)
     print("Sales worksheet updated successfully.\n")
 
+def update_surplus_worksheet(superplus_lits):
+    """
+    Update superplus worksheet, add new row with the list data provided
+    """
+    print("Updating surplus worksheet...\n")
+    surplus_worksheet = SHEET.worksheet("surplus")
+    surplus_worksheet.append_row(superplus_lits)
 
 def calculate_surplus_data(sales_row):
     """
@@ -95,6 +102,7 @@ def main():
     update_sales_worksheet(sales_data)
     new_surplus_data = calculate_surplus_data(sales_data)
     print(new_surplus_data)
+    update_surplus_worksheet(new_surplus_data)
 
 
 print("Welcome to Love Sandwiches Data Automation")
